@@ -1,0 +1,32 @@
+<section class="auth-container">
+  <div class="auth-card">
+    <h1>Bienvenido(a) de vuelta</h1>
+    <p>Inicie sesión para continuar.</p>
+
+    <form [formGroup]="form" (ngSubmit)="login()">
+      
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+
+      <div class="form-group">
+        <label>Correo electrónico</label>
+        <input type="email" formControlName="email" placeholder="Ingresa tu correo" required>
+      </div>
+
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" formControlName="password" placeholder="Ingresa tu contraseña" required>
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="isLoading">
+        {{ isLoading ? 'Ingresando...' : 'Ingresar' }}
+      </button>
+    </form>
+
+    <div class="auth-links">
+      <a routerLink="/forgot-password">¿Olvidaste tu contraseña?</a>
+      <a routerLink="/register">Registrate ahora</a>
+    </div>
+  </div>
+</section>

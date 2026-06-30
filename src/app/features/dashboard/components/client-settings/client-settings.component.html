@@ -1,0 +1,86 @@
+<section class="settings-section">
+  <h1 class="page-title">Configuración</h1>
+  
+  <div class="card settings-card">
+    <div *ngIf="successMessage" class="alert-item success">
+      <div class="alert-title">¡Éxito!</div>
+      <p>{{ successMessage }}</p>
+    </div>
+    
+    <div *ngIf="errorMessage" class="alert-item error">
+      <div class="alert-title">Error</div>
+      <p>{{ errorMessage }}</p>
+    </div>
+
+    <form (ngSubmit)="saveChanges()">
+      <div class="form-group">
+        <label for="username">Nombre / Empresa</label>
+        <input 
+          type="text" 
+          id="username" 
+          name="username" 
+          [(ngModel)]="username" 
+          placeholder="Nombre del cliente"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="email">Correo Electrónico</label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          [(ngModel)]="email" 
+          placeholder="tucorreo@ejemplo.com"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="password">Nueva Contraseña (Opcional)</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          [(ngModel)]="password" 
+          placeholder="Deja en blanco para no cambiarla"
+        >
+      </div>
+
+      <hr class="divider">
+
+      <h2 class="section-subtitle">Gestión de Sedes (Campuses)</h2>
+      <p class="section-description">Agrega las sedes de tu organización para que los técnicos puedan vincular los sensores más fácilmente.</p>
+
+      <div class="form-group campus-input-group">
+        <input 
+          type="text" 
+          id="newCampus" 
+          name="newCampus" 
+          [(ngModel)]="newCampus" 
+          placeholder="Ej: Sede Norte, Edificio Principal"
+        >
+        <button type="button" class="btn-secondary" (click)="addCampus()">Agregar Sede</button>
+      </div>
+
+      <div class="campuses-list" *ngIf="campuses.length > 0">
+        <div class="campus-item" *ngFor="let campus of campuses; let i = index">
+          <span>{{ campus }}</span>
+          <button type="button" class="btn-icon delete-btn" (click)="removeCampus(i)">
+            &times;
+          </button>
+        </div>
+      </div>
+      <div class="no-campuses" *ngIf="campuses.length === 0">
+        <p>No tienes sedes configuradas. Se recomienda agregar al menos una.</p>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary" [disabled]="isSaving || !username || !email">
+          {{ isSaving ? 'Guardando...' : 'Guardar cambios' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

@@ -1,0 +1,31 @@
+<section id="dashboard-view">
+
+  <aside id="sidebar">
+
+    <div class="sidebar-header" style="display: flex; justify-content: center; align-items: center; padding: 1.5rem 0;">
+      <img src="assets/LogoOxaira.png" alt="Logo Oxaira" style="max-width: 80%; height: auto;" />
+    </div>
+
+    <nav id="menu">
+      @for (item of menuItems; track item.route) {
+      <a
+        [routerLink]="item.route"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        {{ item.label }}
+      </a>
+      }
+    </nav>
+
+    <button id="logoutBtn" (click)="logout()">
+      Cerrar Sesión
+    </button>
+
+  </aside>
+
+  <main id="content">
+    <router-outlet></router-outlet>
+  </main>
+
+</section>

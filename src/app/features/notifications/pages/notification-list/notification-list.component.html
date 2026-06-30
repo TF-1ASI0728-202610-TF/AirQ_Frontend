@@ -1,0 +1,121 @@
+<div class="notification-page">
+
+    <div class="page-header">
+
+        <span class="page-badge">
+
+            <span class="material-icons">
+                notifications
+            </span>
+
+            Centro de Alertas
+
+        </span>
+
+        <h1>
+            Notificaciones Inteligentes
+        </h1>
+
+        <p>
+            Alertas generadas automáticamente por la red de sensores IoT
+        </p>
+
+    </div>
+
+    <div class="stats-grid">
+
+        <div class="stat-card critical">
+
+            <h2>
+                {{ criticalAlerts }}
+            </h2>
+
+            <span>
+                Alertas Críticas
+            </span>
+
+        </div>
+
+        <div class="stat-card medium">
+
+            <h2>
+                {{ mediumAlerts }}
+            </h2>
+
+            <span>
+                Alertas Moderadas
+            </span>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h2>
+                {{ notifications.length }}
+            </h2>
+
+            <span>
+                Total Alertas
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="alerts-container">
+
+        @for(
+        notification of notifications;
+        track $index
+        ){
+
+        <div class="alert-card" [class.high]="notification.severity === 'HIGH'"
+            [class.medium]="notification.severity === 'MEDIUM'">
+
+            <div class="alert-header">
+
+                <div>
+
+                    <h3>
+                        {{ notification.title }}
+                    </h3>
+
+                    <div class="sensor-info">
+
+                        <strong>
+
+                            {{ notification.sensorSerialNumber }}
+
+                        </strong>
+
+                        <span>
+
+                            {{ notification.location }}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <p>
+
+                {{ notification.message }}
+
+            </p>
+
+            <small>
+
+                {{ notification.date | date:'dd/MM/yyyy HH:mm' }}
+
+            </small>
+
+        </div>
+
+        }
+
+    </div>
+
+</div>

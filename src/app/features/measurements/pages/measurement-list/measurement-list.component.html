@@ -1,0 +1,244 @@
+<div class="measurement-page">
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+        <div>
+
+            <span class="page-badge">
+
+                <span class="material-icons">
+                    analytics
+                </span>
+
+                Centro de mediciones
+
+            </span>
+
+            <h1>
+                Mediciones Ambientales
+            </h1>
+
+            <p>
+                Monitoreo histórico y en tiempo real de la calidad del aire
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- BUSCADOR -->
+
+    <div class="toolbar">
+
+        <div class="search-box">
+
+            <span class="material-icons">
+                search
+            </span>
+
+            <input type="text" placeholder="Buscar por Sensor ID..." [(ngModel)]="searchTerm">
+
+        </div>
+
+    </div>
+
+    <!-- KPI CARDS -->
+
+    <div class="measurement-stats">
+
+        <div class="stat-card">
+
+            <h2>
+                {{ measurements.length }}
+            </h2>
+
+            <span>
+                Mediciones
+            </span>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h2>
+                {{ averageCo2 }}
+            </h2>
+
+            <span>
+                CO₂ Promedio
+            </span>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h2>
+                {{ averagePm25 }}
+            </h2>
+
+            <span>
+                PM2.5 Promedio
+            </span>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h2>
+                {{ averageTemperature }}°C
+            </h2>
+
+            <span>
+                Temperatura Promedio
+            </span>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h2>
+                {{ averageHumidity }}%
+            </h2>
+
+            <span>
+                Humedad Promedio
+            </span>
+
+        </div>
+
+    </div>
+
+    <!-- DEBUG (BORRAR DESPUÉS) -->
+
+    <!--
+    <p>Loading: {{ loading }}</p>
+    <p>Measurements: {{ measurements.length }}</p>
+    <p>Filtered: {{ filteredMeasurements.length }}</p>
+    -->
+
+    <!-- LOADING -->
+
+    @if (loading) {
+
+    <div class="loading-state">
+
+        <div class="loader"></div>
+
+    </div>
+
+    }
+
+    <!-- TABLA -->
+
+    @if (!loading && filteredMeasurements.length > 0) {
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Sensor</th>
+
+                    <th>CO₂</th>
+
+                    <th>PM2.5</th>
+
+                    <th>Temperatura</th>
+
+                    <th>Humedad</th>
+
+                    <th>Fecha</th>
+
+                    <th>Calidad</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @for (
+                measurement of filteredMeasurements;
+                track $index
+                ) {
+                <tr>
+
+                    <td>
+                        #{{ measurement.sensor }}
+                    </td>
+
+                    <td>
+                        {{ measurement.co2 }}
+                    </td>
+
+                    <td>
+                        {{ measurement.pm25 }}
+                    </td>
+
+                    <td>
+                        {{ measurement.temperature }} °C
+                    </td>
+
+                    <td>
+                        {{ measurement.humidity }} %
+                    </td>
+
+                    <td>
+                        {{
+                        measurement.recordedAt
+                        | date:'dd/MM/yyyy HH:mm'
+                        }}
+                    </td>
+
+                    <td>
+
+                        <span class="quality-badge" [class.good]="getAirQuality(measurement) === 'BUENO'"
+                            [class.moderate]="getAirQuality(measurement) === 'MODERADO'"
+                            [class.low]="getAirQuality(measurement) === 'BAJO'">
+
+                            {{ getAirQuality(measurement) }}
+
+                        </span>
+
+                    </td>
+
+                </tr>
+
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    }
+
+    <!-- EMPTY STATE -->
+
+    @if (!loading && filteredMeasurements.length === 0) {
+
+    <div class="empty-state">
+
+        <span class="material-icons">
+            analytics
+        </span>
+
+        <h3>
+            No existen mediciones registradas
+        </h3>
+
+        <p>
+            Cuando los sensores envíen telemetría aparecerá aquí
+        </p>
+
+    </div>
+
+    }
+
+</div>

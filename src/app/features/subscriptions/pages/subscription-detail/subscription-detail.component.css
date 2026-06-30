@@ -1,0 +1,21 @@
+:host {
+  display: block;
+}
+
+.subscription-page {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.subscription-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+.subscription-card h2 {
+  margin-top: 0;
+  color: #0f172a;
+}

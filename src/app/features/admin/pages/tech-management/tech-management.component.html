@@ -1,0 +1,99 @@
+<div class="container-fluid py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="fw-bold mb-1">Gestión de Personal Técnico</h2>
+      <p class="text-muted mb-0">Administra y registra nuevos técnicos para el equipo operativo.</p>
+    </div>
+    <button class="btn btn-primary" type="button" (click)="openModal()">+ Nuevo Técnico</button>
+  </div>
+
+  <div class="card border-0 shadow-sm">
+    <div class="card-body">
+      <div *ngIf="isLoading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+      </div>
+
+      <div *ngIf="!isLoading" class="table-responsive">
+        <table class="table align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Nombre Completo</th>
+              <th>Correo Corporativo</th>
+              <th>Zona Asignada</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let tech of technicians">
+              <td>{{ tech.fullName || tech.username || '-' }}</td>
+              <td>{{ tech.email || '-' }}</td>
+              <td>{{ tech.zone || '-' }}</td>
+              <td>
+                <button class="btn btn-outline-danger btn-sm" (click)="deleteTechnician(tech.id)">
+                  <i class="bi bi-trash"></i> Eliminar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade show d-block" *ngIf="showModal" tabindex="-1" role="dialog" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 1050; display: flex !important; align-items: center; justify-content: center;">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="width: 100%; max-width: 500px; margin: auto;">
+      <div class="modal-content shadow-lg" style="background-color: #ffffff; border: none; border-radius: 16px; overflow: hidden;">
+        <div class="modal-header border-0 pb-0 d-flex justify-content-between align-items-center" style="padding: 1.5rem 1.5rem 0.5rem;">
+          <h5 class="modal-title fw-bold fs-5" style="color: #207193; margin: 0;">Registrar nuevo técnico</h5>
+          <button type="button" class="btn-close m-0" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body" style="padding: 1.5rem;">
+          <form [formGroup]="techForm" (ngSubmit)="submitTechnician()">
+            
+            <div class="mb-4" style="margin-bottom: 1.5rem;">
+              <label class="form-label fw-semibold text-dark mb-2" style="display: block; margin-bottom: 0.5rem;">Nombre Completo</label>
+              <input class="form-control shadow-none w-100" formControlName="fullName" style="border: 1px solid #ced4da; border-radius: 8px; font-size: 15px; padding: 0.6rem 0.75rem;" />
+            </div>
+            
+            <div class="mb-4" style="margin-bottom: 1.5rem;">
+              <label class="form-label fw-semibold text-dark mb-2" style="display: block; margin-bottom: 0.5rem;">Correo Corporativo</label>
+              <input class="form-control shadow-none w-100" formControlName="email" type="email" style="border: 1px solid #ced4da; border-radius: 8px; font-size: 15px; padding: 0.6rem 0.75rem;" />
+            </div>
+            
+            <div class="mb-4" style="margin-bottom: 1.5rem;">
+              <label class="form-label fw-semibold text-dark mb-2" style="display: block; margin-bottom: 0.5rem;">Teléfono</label>
+              <input class="form-control shadow-none w-100" formControlName="phone" style="border: 1px solid #ced4da; border-radius: 8px; font-size: 15px; padding: 0.6rem 0.75rem;" />
+            </div>
+            
+            <div class="mb-4" style="margin-bottom: 1.5rem;">
+              <label class="form-label fw-semibold text-dark mb-2" style="display: block; margin-bottom: 0.5rem;">Zona Asignada</label>
+              <select class="form-select shadow-none w-100" formControlName="zone" style="border: 1px solid #ced4da; border-radius: 8px; font-size: 15px; padding: 0.6rem 0.75rem;">
+                <option value="Lima Centro">Lima Centro</option>
+                <option value="Lima Norte">Lima Norte</option>
+                <option value="Lima Sur">Lima Sur</option>
+                <option value="Lima Este">Lima Este</option>
+              </select>
+            </div>
+            
+            <div class="alert mt-4 border-0 mb-0" style="background-color: #f5f7fa; border-left: 4px solid #207193; border-radius: 8px; padding: 1rem;">
+              <div class="d-flex align-items-center">
+                <i class="bi bi-info-circle-fill me-3" style="color: #207193; font-size: 1.25rem;"></i>
+                <div>
+                  <p class="text-muted small mb-0" style="font-size: 0.85rem; line-height: 1.4;">Se generará una contraseña temporal automáticamente y se enviará al correo del técnico.</p>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer border-0 px-4" style="display: flex; justify-content: center; gap: 1rem; width: 100%; padding-top: 1.5rem; padding-bottom: 2rem;">
+          <button class="btn fw-medium" type="button" (click)="closeModal()" style="background-color: #dc3545; color: white; border: none; border-radius: 8px; padding: 0.6rem 2rem;">
+            Cancelar
+          </button>
+          <button class="btn fw-medium" type="button" (click)="submitTechnician()" style="background-color: #207193; color: white; border: none; border-radius: 8px; padding: 0.6rem 2rem;">
+            Guardar Técnico
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

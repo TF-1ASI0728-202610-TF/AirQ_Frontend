@@ -1,0 +1,316 @@
+:host {
+  display: block;
+}
+
+.register-page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  background: linear-gradient(180deg, #f5f7fa 0%, #eef7fb 100%);
+}
+
+.register-left {
+  background: linear-gradient(135deg, #0f172a, #18344b);
+  color: #fff;
+  padding: 64px 56px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.brand-top {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 78px;
+  height: 78px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #207193, #48b9d8);
+  display: grid;
+  place-items: center;
+}
+
+.logo .material-icons {
+  font-size: 38px;
+}
+
+.hero-badge,
+.live-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-badge {
+  background: rgba(255, 255, 255, 0.08);
+  color: #d7f5ff;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.live-status {
+  color: #9df2b8;
+  font-size: 0.9rem;
+  margin-top: 8px;
+}
+
+.pulse {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  background: #22c55e;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.register-left h1 {
+  margin: 0;
+  font-size: clamp(2.6rem, 4vw, 4rem);
+}
+
+.hero-text {
+  color: #cbd5e1;
+  max-width: 560px;
+  line-height: 1.7;
+  margin: 18px 0 22px;
+}
+
+.stats {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.stat {
+  flex: 1;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+}
+
+.stat h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+.stat span {
+  color: #cbd5e1;
+  font-size: 0.88rem;
+}
+
+.section-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  margin: 18px 0;
+}
+
+.benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.benefit-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.benefit-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.benefit-content h4,
+.benefit-content p {
+  margin: 0;
+}
+
+.benefit-content h4 {
+  font-size: 1rem;
+}
+
+.benefit-content p {
+  color: #cbd5e1;
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+.register-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.register-card {
+  width: min(520px, 100%);
+  background: #fff;
+  border-radius: 22px;
+  padding: 38px 32px;
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.1);
+}
+
+.card-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.form-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #eef9fb;
+  color: #207193;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.card-header h2 {
+  margin: 12px 0 8px;
+  color: #0f172a;
+  font-size: 2rem;
+}
+
+.card-header p {
+  margin: 0;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.field {
+  margin-bottom: 18px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 8px;
+  color: #475569;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.field-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #dbe3eb;
+  background: #f8fafc;
+  border-radius: 14px;
+  padding: 0 14px;
+  height: 56px;
+}
+
+.field-container:focus-within {
+  border-color: #207193;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(32, 113, 147, 0.08);
+}
+
+.field-container .material-icons {
+  color: #95a3b8;
+}
+
+.field-container input {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  outline: none;
+}
+
+.register-options {
+  margin: 10px 0 18px;
+}
+
+.remember {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.register-main-btn,
+.login-btn-secondary {
+  width: 100%;
+  border-radius: 14px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 700;
+}
+
+.register-main-btn {
+  background: linear-gradient(90deg, #207193, #3ab5d3);
+  color: #fff;
+  border: 0;
+}
+
+.login-btn-secondary {
+  background: #fff;
+  color: #207193;
+  border: 1px solid #207193;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+.register-text {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.88rem;
+}
+
+@media (max-width: 960px) {
+  .register-page {
+    grid-template-columns: 1fr;
+  }
+
+  .register-left,
+  .register-right {
+    padding: 48px 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .stats,
+  .benefits {
+    flex-direction: column;
+  }
+
+  .register-card {
+    padding: 28px 18px;
+  }
+}

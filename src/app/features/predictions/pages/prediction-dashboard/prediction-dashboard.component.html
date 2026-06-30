@@ -1,0 +1,158 @@
+<div class="prediction-page">
+
+    <div class="page-header">
+
+        <span class="page-badge">
+
+            <span class="material-icons">
+                auto_graph
+            </span>
+
+            Predicción Ambiental
+
+        </span>
+
+        <h1>
+            Centro Predictivo AirQ
+        </h1>
+
+        <p>
+            Estimaciones basadas en tendencias y comportamiento histórico de sensores IoT
+        </p>
+
+    </div>
+
+    <div class="prediction-grid">
+
+        <div class="prediction-card risk">
+
+            <span class="material-icons">
+                warning
+            </span>
+
+            <h2>
+                {{ projectedRisk }}
+            </h2>
+
+            <p>
+                Riesgo proyectado
+            </p>
+
+        </div>
+
+        <div class="prediction-card">
+
+            <span class="material-icons">
+                trending_up
+            </span>
+
+            <h2>
+                {{ co2Trend }}
+            </h2>
+
+            <p>
+                Tendencia CO₂
+            </p>
+
+        </div>
+
+        <div class="prediction-card">
+
+            <span class="material-icons">
+                air
+            </span>
+
+            <h2>
+                {{ pm25Trend }}
+            </h2>
+
+            <p>
+                Tendencia PM2.5
+            </p>
+
+        </div>
+
+        <div class="prediction-card">
+
+            <span class="material-icons">
+                sensors
+            </span>
+
+            <h2>
+                {{ highestRiskSensor }}
+            </h2>
+
+            <p>
+                Sensor más crítico
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="prediction-panel">
+
+        <h2>
+            Zona con Mayor Riesgo Futuro
+        </h2>
+
+        <div class="location-card">
+
+            <span class="material-icons">
+                location_on
+            </span>
+
+            <h3>
+                {{ highestRiskLocation }}
+            </h3>
+
+            <p>
+                Área con las peores condiciones ambientales registradas
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="prediction-panel">
+
+        <h2>
+            Evolución Histórica de CO₂
+        </h2>
+
+        <canvas id="co2Chart">
+        </canvas>
+
+    </div>
+
+    <div class="prediction-panel">
+
+        <h2>
+            Evolución PM2.5
+        </h2>
+
+        <canvas id="pm25Chart"></canvas>
+
+    </div>
+
+    <div class="prediction-panel">
+
+        <h2>
+            Temperatura vs Humedad
+        </h2>
+
+        <canvas id="climateChart"></canvas>
+
+    </div>
+
+    <div class="prediction-panel">
+
+        <h2>
+            Distribución de Riesgo Ambiental
+        </h2>
+
+        <canvas id="riskChart"></canvas>
+
+    </div>
+
+</div>

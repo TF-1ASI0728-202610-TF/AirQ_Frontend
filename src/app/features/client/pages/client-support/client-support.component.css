@@ -1,0 +1,8 @@
+.form-control:focus, .form-select:focus {
+  border-color: #207193;
+  box-shadow: 0 0 0 0.25rem rgba(32, 113, 147, 0.25);
+}
+
+.btn:hover {
+  filter: brightness(90%);
+}

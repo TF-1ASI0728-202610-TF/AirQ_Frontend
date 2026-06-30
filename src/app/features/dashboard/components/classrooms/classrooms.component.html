@@ -1,0 +1,68 @@
+<section class="classrooms-section">
+  <h1 class="page-title">Mis Sedes / Aulas</h1>
+
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-value">{{ totalCampuses }}</div>
+      <div class="kpi-label">Sedes Registradas</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">{{ totalClassrooms }}</div>
+      <div class="kpi-label">Aulas Monitoreadas</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value online-status">{{ onlineCount }}</div>
+      <div class="kpi-label">Sensores En Línea</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value offline-status">{{ offlineCount }}</div>
+      <div class="kpi-label">Sensores Desconectados</div>
+    </div>
+  </div>
+
+  <!-- Agrupación por Sedes -->
+  <div class="campus-container" *ngFor="let campus of groupedSensors | keyvalue">
+    <h2 class="campus-title"><i class="icon-domain"></i> {{ campus.key }}</h2>
+    
+    <div class="sensor-grid">
+      <!-- Tarjetas de Aula -->
+      <div class="sensor-card" *ngFor="let sensor of campus.value">
+        <div class="sensor-card-header">
+          <h3>{{ sensor.location || 'Aula Desconocida' }}</h3>
+          <span class="status-badge" [ngClass]="sensor.isOnline ? 'online' : 'offline'">
+            {{ sensor.isOnline ? 'Online' : 'Offline' }}
+          </span>
+        </div>
+        
+        <div class="sensor-id">
+          <small>ID: {{ sensor.serialNumber }}</small>
+        </div>
+
+        <div class="air-quality-indicator" *ngIf="sensor.isOnline">
+          <div class="aq-circle" [style.backgroundColor]="getAirQualityStatus(sensor.latestCo2).color"></div>
+          <span class="aq-text">Calidad: {{ getAirQualityStatus(sensor.latestCo2).text }}</span>
+        </div>
+        <div class="air-quality-indicator" *ngIf="!sensor.isOnline">
+          <div class="aq-circle" style="background-color: #cbd5e1;"></div>
+          <span class="aq-text">Sin conexión reciente</span>
+        </div>
+
+        <div class="sensor-actions">
+
+          <button class="btn-danger" *ngIf="!sensor.isOnline" (click)="reportFault(sensor)" [disabled]="isReportingFault">
+            Reportar Falla
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="totalClassrooms === 0">
+    <p>No tienes sensores vinculados a ninguna sede o aula.</p>
+  </div>
+
+
+
+</section>

@@ -1,0 +1,124 @@
+<div class="container-fluid py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-5">
+          <div class="text-center mb-4">
+            <h2 class="fw-bold" style="color: #207193;">Centro de Soporte Técnico</h2>
+            <p class="text-muted">Describa su problema a continuación y nuestro equipo técnico lo atenderá a la brevedad.</p>
+          </div>
+
+          <!-- Mensajes de Éxito o Error -->
+          <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i> {{ successMessage }}
+            <button type="button" class="btn-close" (click)="successMessage = ''"></button>
+          </div>
+          <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ errorMessage }}
+            <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
+          </div>
+
+          <!-- Formulario de Ticket -->
+          <form (ngSubmit)="onSubmit()" #ticketForm="ngForm">
+            <div class="row g-4">
+              
+              <!-- Categoría -->
+              <div class="col-12">
+                <label class="form-label fw-bold" style="color: #495057;">Categoría del Problema *</label>
+                <select class="form-select form-select-lg" [(ngModel)]="ticketData.category" name="category" required>
+                  <option value="" disabled selected>Seleccione una opción...</option>
+                  <option value="Falla de Hardware">Falla de Hardware (Ej. Sensor dañado, no enciende)</option>
+                  <option value="Soporte de Software">Soporte de Software (Ej. No hay acceso a la plataforma)</option>
+                  <option value="Instalación">Instalación (Ej. Solicitar nuevos equipos o mantenimiento)</option>
+                </select>
+              </div>
+
+              <!-- Sede (Opcional) -->
+              <div class="col-md-6" *ngIf="campuses.length > 0">
+                <label class="form-label fw-bold" style="color: #495057;">Sede Afectada</label>
+                <select class="form-select form-select-lg" [(ngModel)]="ticketData.campus" name="campus" (change)="onCampusChange()">
+                  <option value="" selected>General (Toda la empresa)</option>
+                  <option *ngFor="let c of campuses" [value]="c">{{ c }}</option>
+                </select>
+              </div>
+
+              <!-- Aula/Oficina (Opcional) -->
+              <div class="col-md-6" *ngIf="ticketData.campus && classrooms.length > 0">
+                <label class="form-label fw-bold" style="color: #495057;">Aula / Oficina</label>
+                <select class="form-select form-select-lg" [(ngModel)]="ticketData.classroom" name="classroom">
+                  <option value="" selected>Toda la Sede</option>
+                  <option *ngFor="let loc of classrooms" [value]="loc">{{ loc }}</option>
+                </select>
+              </div>
+
+              <!-- Descripción -->
+              <div class="col-12">
+                <label class="form-label fw-bold" style="color: #495057;">Descripción Detallada *</label>
+                <textarea class="form-control" [(ngModel)]="ticketData.issueDescription" name="issueDescription" rows="4" required placeholder="Por favor describa el problema con el mayor detalle posible para enviar al técnico adecuado..."></textarea>
+              </div>
+
+              <!-- Submit -->
+              <div class="col-12 text-center mt-4">
+                <button type="submit" class="btn btn-lg w-50" style="background-color: #207193; color: white;" [disabled]="isSubmitting || ticketForm.invalid">
+                  <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  {{ isSubmitting ? 'Enviando...' : 'Crear Ticket' }}
+                </button>
+              </div>
+              
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Mis Tickets Recientes -->
+      <div class="mt-5">
+        <h4 class="fw-bold mb-4" style="color: #495057;">Mis Tickets Recientes</h4>
+        
+        <div *ngIf="isLoadingTickets" class="text-center py-4">
+          <div class="spinner-border text-secondary" role="status"></div>
+        </div>
+
+        <div *ngIf="!isLoadingTickets && recentTickets.length === 0" class="text-center text-muted p-4 bg-light rounded-4">
+          No tienes tickets recientes.
+        </div>
+
+        <div *ngIf="!isLoadingTickets && recentTickets.length > 0" class="card shadow-sm border-0 mt-3">
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th class="ps-4">ID</th>
+                    <th>Categoría</th>
+                    <th>Descripción</th>
+                    <th>Fecha y Hora</th>
+                    <th class="pe-4">Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let ticket of recentTickets">
+                    <td class="ps-4"><span class="badge bg-light text-dark border">{{ ticket.ticketNumber }}</span></td>
+                    <td class="fw-medium text-dark">{{ ticket.category }}</td>
+                    <td>
+                      <div class="text-muted small text-truncate" style="max-width: 300px;">
+                        {{ ticket.issueDescription }}
+                      </div>
+                    </td>
+                    <td>
+                      <div class="small text-muted">{{ ticket.createdAt | date:'short' }}</div>
+                    </td>
+                    <td class="pe-4">
+                      <span class="badge" [ngClass]="getStatusBadge(ticket.status).class">
+                        {{ getStatusBadge(ticket.status).label }}
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

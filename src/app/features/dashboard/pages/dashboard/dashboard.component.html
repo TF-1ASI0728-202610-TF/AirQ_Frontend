@@ -1,0 +1,231 @@
+@switch (activeView) {
+  @case ('classrooms') {
+    <app-classrooms></app-classrooms>
+  }
+  @case ('alerts') {
+    <app-alert-center></app-alert-center>
+  }
+  @case ('support') {
+    <section>
+      <h1 class="page-title">Soporte</h1>
+      <div class="ticket-box">
+        <div class="form-group">
+          <label>Asunto</label>
+          <input type="text">
+        </div>
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea></textarea>
+        </div>
+        <button class="btn-primary">Enviar ticket</button>
+      </div>
+      <br>
+      <div class="card">
+        <h3>Mis tickets recientes</h3>
+        <br>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#1042</td>
+              <td>Pendiente</td>
+            </tr>
+            <tr>
+              <td>#1034</td>
+              <td>Resuelto</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  }
+  @case ('clientSettings') {
+    <app-client-settings></app-client-settings>
+  }
+  @case ('clients') {
+    <section>
+      <h1 class="page-title">Directorio de clientes</h1>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Empresa</th>
+              <th>Contacto</th>
+              <th>Sensores</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Colegio San Marcos</td>
+              <td>Juan Pérez</td>
+              <td>45</td>
+              <td>Activo</td>
+            </tr>
+            <tr>
+              <td>Corp. Andina Sur</td>
+              <td>María Gómez</td>
+              <td>15</td>
+              <td>Activo</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  }
+  @case ('billing') {
+    <section>
+      <h1 class="page-title">Facturación</h1>
+      <div class="card">
+        <h3>Ingreso recurrente</h3>
+        <br>
+        <div class="metric-value">S/ 45,200.00</div>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Plan</th>
+              <th>Factura</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Colegio San Marcos</td>
+              <td>Enterprise</td>
+              <td>S/ 2,500</td>
+            </tr>
+            <tr>
+              <td>Instituto Delta</td>
+              <td>Standard</td>
+              <td>S/ 1,200</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  }
+  @case ('tickets') {
+    <section>
+      <h1 class="page-title">Supervisión Global de Tickets</h1>
+      <div class="alert-item">
+        <strong>Reportado</strong>
+        <p>Sensor Aula 302 no reporta datos.</p>
+      </div>
+      <div class="alert-item">
+        <strong>En proceso</strong>
+        <p>Reemplazo de nodo dañado.</p>
+      </div>
+      <div class="alert-item">
+        <strong>Resuelto</strong>
+        <p>Incidencia solucionada.</p>
+      </div>
+    </section>
+  }
+  @case ('adminSettings') {
+    <section>
+      <h1 class="page-title">Configuración de precios</h1>
+      <div class="card">
+        <div class="form-group">
+          <label>Tarifa Plan Básico</label>
+          <input value="1200">
+        </div>
+        <div class="form-group">
+          <label>Tarifa Plan Pro</label>
+          <input value="2500">
+        </div>
+        <button class="btn-primary">Guardar cambios</button>
+      </div>
+    </section>
+  }
+  @default {
+    <section>
+      <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h1 class="page-title" style="margin-bottom: 0;">Dashboard</h1>
+        <div class="campus-selector" *ngIf="campuses.length > 0">
+          <label for="campusSelect" style="margin-right: 10px; font-weight: bold; color: #207193;">Sede: </label>
+          <select id="campusSelect" (change)="onCampusChange($event)" [value]="selectedCampus" class="form-select form-select-sm d-inline-block w-auto shadow-sm border-0" style="background-color: #f8f9fa;">
+            <option *ngFor="let campus of campuses" [value]="campus">{{ campus }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="empty-state" *ngIf="hasNoSensors" style="text-align: center; padding: 50px 20px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <h2 style="color: #1e293b; margin-bottom: 15px;">Bienvenido a tu Panel de Control</h2>
+        <p style="color: #64748b; font-size: 16px;">No tienes sedes ni sensores vinculados a tu cuenta actualmente.</p>
+        <p style="color: #64748b; font-size: 16px;">Por favor, comunícate con soporte técnico para que vinculen tus sensores.</p>
+      </div>
+
+      <div *ngIf="!hasNoSensors">
+        <div class="card-grid">
+        <div class="metric-card">
+          <h4>CO2</h4>
+          <div class="metric-value">{{ (averageMetrics?.averageCo2 | number:'1.0-0') || 'N/A' }} ppm</div>
+          <p>Nivel moderado</p>
+        </div>
+        <div class="metric-card">
+          <h4>PM2.5</h4>
+          <div class="metric-value">{{ (averageMetrics?.averagePm25 | number:'1.0-0') || 'N/A' }} μg/m³</div>
+          <p>Nivel moderado</p>
+        </div>
+        <div class="metric-card">
+          <h4>Temperatura</h4>
+          <div class="metric-value">{{ (averageMetrics?.averageTemperature | number:'1.0-1') || 'N/A' }} °C</div>
+          <p>Última lectura</p>
+        </div>
+        <div class="metric-card">
+          <h4>Humedad</h4>
+          <div class="metric-value">{{ (averageMetrics?.averageHumidity | number:'1.0-1') || 'N/A' }} %</div>
+          <p>Última lectura</p>
+        </div>
+      </div>
+      <div class="metrics-card">
+        <h3 class="card-title">Partículas PM2.5</h3>
+        <div style="height: 300px; width: 100%;">
+          <canvas baseChart
+                  [data]="chartDataPm25"
+                  [options]="pm25ChartOptions"
+                  [type]="'line'">
+          </canvas>
+        </div>
+      </div>
+      <div class="metrics-card">
+        <h3 class="card-title">Dióxido de Carbono (CO2)</h3>
+        <div style="height: 300px; width: 100%;">
+          <canvas baseChart
+                  [data]="chartDataCo2"
+                  [options]="co2ChartOptions"
+                  [type]="'line'">
+          </canvas>
+        </div>
+      </div>
+      <div class="metrics-card">
+        <h3 class="card-title">Temperatura</h3>
+        <div style="height: 300px; width: 100%;">
+          <canvas baseChart
+                  [data]="chartDataTemp"
+                  [options]="tempChartOptions"
+                  [type]="'line'">
+          </canvas>
+        </div>
+      </div>
+      <div class="metrics-card">
+        <h3 class="card-title">Humedad Relativa</h3>
+        <div style="height: 300px; width: 100%;">
+          <canvas baseChart
+                  [data]="chartDataHum"
+                  [options]="humChartOptions"
+                  [type]="'line'">
+          </canvas>
+        </div>
+      </div>
+      </div> <!-- Closes *ngIf="!hasNoSensors" -->
+    </section>
+  }
+}

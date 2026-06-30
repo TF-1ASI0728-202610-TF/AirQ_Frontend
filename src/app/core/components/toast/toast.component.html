@@ -1,0 +1,14 @@
+<div class="toast-container" *ngIf="toastService.toastState$ | async as toast">
+  <div class="toast-card slide-in-right" [ngClass]="toast.type">
+    <div class="toast-icon">
+      <i *ngIf="toast.type === 'success'" class="bi bi-check-circle-fill"></i>
+      <i *ngIf="toast.type === 'error'" class="bi bi-x-circle-fill"></i>
+      <i *ngIf="toast.type === 'info'" class="bi bi-info-circle-fill"></i>
+      <i *ngIf="toast.type === 'warning'" class="bi bi-exclamation-triangle-fill"></i>
+    </div>
+    <div class="toast-content">
+      <span class="toast-message">{{ toast.message }}</span>
+    </div>
+    <button class="toast-close" (click)="toastService.clear()"><i class="bi bi-x-lg"></i></button>
+  </div>
+</div>

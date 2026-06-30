@@ -1,0 +1,105 @@
+<div class="container-fluid py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold" style="color: #207193;">Panel de Supervisión de Tickets</h2>
+  </div>
+
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border" style="color: #207193;" role="status"></div>
+    <p class="mt-2 text-muted">Cargando tickets...</p>
+  </div>
+
+  <div *ngIf="!isLoading" class="d-flex flex-nowrap overflow-auto kanban-board pb-3" style="gap: 1.5rem;">
+    <!-- Columna: Abierto -->
+    <div class="kanban-column-wrapper" style="min-width: 320px; flex: 1;">
+      <div class="kanban-column bg-light rounded-3 p-3 h-100">
+        <h5 class="fw-bold mb-3 border-bottom pb-2" style="color: #495057;">Abierto ({{ openTickets.length }})</h5>
+        
+        <div *ngFor="let ticket of openTickets" class="card kanban-card shadow-sm mb-3 border-0">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <span class="badge bg-secondary">{{ ticket.ticketNumber }}</span>
+              <span class="badge" [style.background-color]="getPriorityColor(ticket.priority)">
+                {{ ticket.priority }}
+              </span>
+            </div>
+            <h6 class="fw-bold mb-1">{{ ticket.clientName }}</h6>
+            <span class="badge bg-info text-dark mb-2">{{ ticket.category }}</span>
+            <p class="text-muted small mb-3">{{ ticket.issueDescription }}</p>
+            
+            <div class="mt-2">
+              <label class="small text-muted mb-1">Asignar Técnico:</label>
+              <select class="form-select form-select-sm" 
+                      (change)="assignTechnician(ticket, selectTech.value)" #selectTech>
+                <option value="">Seleccione un técnico...</option>
+                <option *ngFor="let tech of technicians" [value]="tech.id">
+                  {{ tech.fullName }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <div *ngIf="openTickets.length === 0" class="text-center py-4 text-muted small">
+          No hay tickets abiertos
+        </div>
+      </div>
+    </div>
+
+    <!-- Columna: En Progreso -->
+    <div class="kanban-column-wrapper" style="min-width: 320px; flex: 1;">
+      <div class="kanban-column bg-light rounded-3 p-3 h-100">
+        <h5 class="fw-bold mb-3 border-bottom pb-2" style="color: #207193;">En Progreso ({{ inProgressTickets.length }})</h5>
+        
+        <div *ngFor="let ticket of inProgressTickets" class="card kanban-card shadow-sm mb-3 border-0 border-start border-4 border-info">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <span class="badge bg-secondary">{{ ticket.ticketNumber }}</span>
+              <span class="badge" [style.background-color]="getPriorityColor(ticket.priority)">
+                {{ ticket.priority }}
+              </span>
+            </div>
+            <h6 class="fw-bold mb-1">{{ ticket.clientName }}</h6>
+            <span class="badge bg-info text-dark mb-2">{{ ticket.category }}</span>
+            <p class="text-muted small mb-3">{{ ticket.issueDescription }}</p>
+            
+            <div class="mt-2 text-warning small fw-medium">
+              <i class="bi bi-clock-history"></i> En atención por el técnico
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="inProgressTickets.length === 0" class="text-center py-4 text-muted small">
+          No hay tickets en progreso
+        </div>
+      </div>
+    </div>
+
+    <!-- Columna: Resuelto -->
+    <div class="kanban-column-wrapper" style="min-width: 320px; flex: 1;">
+      <div class="kanban-column bg-light rounded-3 p-3 opacity-75 h-100">
+        <h5 class="fw-bold mb-3 border-bottom pb-2" style="color: #28a745;">Resuelto ({{ resolvedTickets.length }})</h5>
+        
+        <div *ngFor="let ticket of resolvedTickets" class="card kanban-card shadow-sm mb-3 border-0 border-start border-4 border-success">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <span class="badge bg-secondary">{{ ticket.ticketNumber }}</span>
+              <span class="badge" [style.background-color]="getPriorityColor(ticket.priority)">
+                {{ ticket.priority }}
+              </span>
+            </div>
+            <h6 class="fw-bold mb-1 text-muted"><del>{{ ticket.clientName }}</del></h6>
+            <span class="badge bg-secondary mb-2">{{ ticket.category }}</span>
+            <p class="text-muted small mb-0">{{ ticket.issueDescription }}</p>
+            <div class="mt-2 text-success small fw-medium">
+              <i class="bi bi-check-circle-fill"></i> Resuelto
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="resolvedTickets.length === 0" class="text-center py-4 text-muted small">
+          No hay tickets resueltos
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

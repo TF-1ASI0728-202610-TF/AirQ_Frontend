@@ -1,0 +1,33 @@
+:host {
+  display: block;
+}
+
+.sensors-page {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.sensors-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sensors-header h2 {
+  margin: 0;
+  color: #0f172a;
+}
+
+.sensor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+.sensor-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}

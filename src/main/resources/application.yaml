@@ -1,0 +1,35 @@
+spring:
+  mqtt:
+    broker-url: tcp://broker.hivemq.com:1883
+    client-id: airq-cloud-backend
+    default-topic: airq/cloud/telemetry
+  datasource:
+    url: jdbc:postgresql://localhost:5432/airq
+    username: postgres
+    password: postgres
+
+  # Brevo API configuration replacing SMTP to avoid port 587 blocking on cloud platforms
+  brevo:
+    api:
+      url: https://api.brevo.com/v3/smtp/email
+      key: ${BREVO_API_KEY}
+      sender: ${BREVO_SENDER:noreply.oxaira@gmail.com}
+
+  sql:
+    init:
+      mode: never
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+    show-sql: true
+
+    properties:
+      hibernate:
+        format_sql: true
+
+  admin:
+    default:
+      email: ${ADMIN_DEFAULT_EMAIL:admin@gmail.com}
+      password: ${ADMIN_DEFAULT_PASSWORD:123456}

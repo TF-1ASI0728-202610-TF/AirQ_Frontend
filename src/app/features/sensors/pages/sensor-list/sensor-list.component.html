@@ -1,0 +1,479 @@
+<div class="sensor-page">
+
+    <div class="page-header">
+
+        <div>
+
+            <span class="page-badge">
+
+                <span class="material-icons">
+                    sensors
+                </span>
+
+                Red de sensores
+
+            </span>
+
+            <h1>
+
+                Sensores Ambientales
+            </h1>
+
+            <p>
+                Supervisa y gestiona todos los dispositivos IoT conectados
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="sensor-stats">
+
+        <div class="stat-card">
+
+            <h2>
+                {{ filteredSensors.length }}
+            </h2>
+
+            <span>
+                Sensores Totales
+            </span>
+
+        </div>
+
+        <div class="stat-card active">
+
+            <h2>
+                {{ activeSensors }}
+            </h2>
+
+            <span>
+                Activo
+            </span>
+
+        </div>
+
+        <div class="stat-card inactive">
+
+            <h2>
+                {{ inactiveSensors }}
+            </h2>
+
+            <span>
+                Fuera de Línea
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="toolbar">
+
+        <div class="search-box">
+
+            <span class="material-icons">
+                search
+            </span>
+
+            <input type="text" placeholder="Buscar sensor o ubicación..." [(ngModel)]="searchTerm">
+
+        </div>
+
+        <button class="add-btn" (click)="openModal()">
+
+            <span class="material-icons">
+                add
+            </span>
+
+            Agregar sensor
+
+        </button>
+
+    </div>
+
+    <div class="sensor-grid">
+
+        @if(filteredSensors.length === 0){
+
+        <div class="empty-search">
+
+            <span class="material-icons">
+                search_off
+            </span>
+
+            <h3>
+                No se encontraron sensores
+            </h3>
+
+            <p>
+                Intenta con otro número de serie o ubicación
+            </p>
+
+        </div>
+
+        }
+
+        @for(sensor of filteredSensors; track sensor.id){
+
+        <div class="sensor-card">
+
+            <div class="sensor-top">
+
+                <div class="sensor-icon">
+
+                    <span class="material-icons">
+                        sensors
+                    </span>
+
+                </div>
+
+                <div class="status-badge" [class.online]="sensor.active" [class.offline]="!sensor.active">
+
+                    <span class="status-pulse"></span>
+
+                    {{ sensor.active ? 'EN LÍNEA' : 'FUERA DE LÍNEA' }}
+
+                </div>
+
+            </div>
+
+            <h3>
+                {{ sensor.serialNumber }}
+            </h3>
+
+            <p>
+                {{ sensor.location }}
+            </p>
+
+            @if(getLatestMeasurement(sensor.id); as measurement){
+
+            <div class="mini-quality">
+
+                <span class="quality-dot" [class.good-dot]="getAirQuality(measurement)==='BUENO'"
+                    [class.moderate-dot]="getAirQuality(measurement)==='MODERADO'"
+                    [class.low-dot]="getAirQuality(measurement)==='CRÍTICO'">
+                </span>
+
+                {{ getAirQuality(measurement) }}
+
+            </div>
+
+            } @else {
+
+            <div class="mini-quality waiting">
+
+                <span class="material-icons">
+                    schedule
+                </span>
+
+                Esperando telemetría
+
+            </div>
+
+            }
+
+            <div class="sensor-footer">
+
+                <span>
+                    Sensor #{{ sensor.id }}
+                </span>
+
+                <span>
+                    IoT Device
+                </span>
+
+            </div>
+
+            <div class="sensor-actions">
+
+                <button class="edit-btn" (click)="editSensor(sensor)">
+
+                    <span class="material-icons">
+                        edit
+                    </span>
+
+                </button>
+
+                <button class="delete-btn" (click)="openDeleteModal(sensor.id)">
+
+                    <span class="material-icons">
+                        delete
+                    </span>
+
+                </button>
+
+            </div>
+
+            <button class="details-btn" (click)="toggleSensor(sensor.id)">
+
+                <span class="material-icons">
+
+                    {{
+                    expandedSensorId === sensor.id
+                    ? 'expand_less'
+                    : 'expand_more'
+                    }}
+
+                </span>
+
+                Ver Telemetría
+
+            </button>
+
+            @if(expandedSensorId === sensor.id){
+
+            <div class="measurement-panel">
+
+                @if(getLatestMeasurement(sensor.id); as measurement){
+
+                <div class="quality-section">
+
+                    <div class="quality-badge" [class.good]="getAirQuality(measurement)==='BUENO'"
+                        [class.moderate]="getAirQuality(measurement)==='MODERADO'"
+                        [class.low]="getAirQuality(measurement)==='CRÍTICO'">
+
+                        {{ getAirQuality(measurement) }}
+
+                    </div>
+
+                    <span class="measurement-date">
+
+                        {{
+                        measurement.recordedAt
+                        | date:'dd/MM/yyyy HH:mm'
+                        }}
+
+                    </span>
+
+                </div>
+
+                <div class="measurement-grid">
+
+                    <div class="measurement-box co2">
+
+                        <span>
+                            CO₂
+                        </span>
+
+                        <strong>
+                            {{ measurement.co2 }}
+                        </strong>
+
+                        <small>
+                            ppm
+                        </small>
+
+                    </div>
+
+                    <div class="measurement-box pm25">
+
+                        <span>
+                            PM2.5
+                        </span>
+
+                        <strong>
+                            {{ measurement.pm25 }}
+                        </strong>
+
+                        <small>
+                            μg/m³
+                        </small>
+
+                    </div>
+
+                    <div class="measurement-box temp">
+
+                        <span>
+                            Temperatura
+                        </span>
+
+                        <strong>
+                            {{ measurement.temperature }}
+                        </strong>
+
+                        <small>
+                            °C
+                        </small>
+
+                    </div>
+
+                    <div class="measurement-box humidity">
+
+                        <span>
+                            Humedad
+                        </span>
+
+                        <strong>
+                            {{ measurement.humidity }}
+                        </strong>
+
+                        <small>
+                            %
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <div class="device-health">
+                    ...
+                </div>
+
+                } @else {
+
+                <div class="empty-measurement">
+
+                    <span class="material-icons">
+                        sensors_off
+                    </span>
+
+                    <h4>
+                        Sin telemetría registrada
+                    </h4>
+
+                    <p>
+                        Este sensor aún no ha enviado datos ambientales
+                    </p>
+
+                </div>
+
+                }
+
+            </div>
+
+            }
+
+        </div>
+
+        }
+
+    </div>
+
+</div>
+
+@if(showModal){
+
+<div class="modal-overlay" (click)="closeModal()">
+
+    <div class="sensor-modal" (click)="$event.stopPropagation()">
+
+        <h2>
+
+            {{
+            editingSensorId
+            ? 'Editar Sensor'
+            : 'Registrar Sensor'
+            }}
+
+        </h2>
+
+        <p>
+
+            {{
+            editingSensorId
+            ? 'Actualiza la información del sensor'
+            : 'Agregar un nuevo sensor ambiental'
+            }}
+
+        </p>
+
+        <form [formGroup]="sensorForm" (ngSubmit)="createSensor()">
+
+            <div class="modal-field">
+
+                <label>
+                    Número de serie
+                </label>
+
+                <input formControlName="serialNumber">
+
+            </div>
+
+            <div class="modal-field">
+
+                <label>
+                    Ubicación
+                </label>
+
+                <input formControlName="location">
+
+            </div>
+
+            <div class="modal-actions">
+
+                <button type="button" class="cancel-btn" (click)="closeModal()">
+
+                    Cancelar
+
+                </button>
+
+                <button type="submit" class="save-btn">
+
+                    {{
+
+                    editingSensorId
+
+                    ? 'Actualizar Sensor'
+
+                    : 'Crear Sensor'
+
+                    }}
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+}
+
+@if(showDeleteModal){
+
+<div class="delete-overlay">
+
+    <div class="delete-modal">
+
+        <span class="material-icons warning-icon">
+
+            warning
+
+        </span>
+
+        <h2>
+
+            Eliminar Sensor
+
+        </h2>
+
+        <p>
+
+            Esta acción eliminará el sensor
+            permanentemente.
+
+        </p>
+
+        <div class="delete-actions">
+
+            <button class="cancel-btn" (click)="closeDeleteModal()">
+
+                Cancelar
+
+            </button>
+
+            <button class="danger-btn" (click)="confirmDelete()">
+
+                Eliminar
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+}

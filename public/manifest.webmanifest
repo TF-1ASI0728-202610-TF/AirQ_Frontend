@@ -1,0 +1,16 @@
+{
+  "name": "AirQ",
+  "short_name": "AirQ",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f7fa",
+  "theme_color": "#207193",
+  "description": "Monitoreo ambiental y calidad del aire",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+import { Component, inject } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+
+@Component({
+  selector: 'app-forgot-password',
+  standalone: true,
+  imports: [ReactiveFormsModule, RouterLink],
+  templateUrl: './forgot-password.component.html',
+  styleUrl: './forgot-password.component.css'
+})
+export class ForgotPasswordComponent {
+  private fb = inject(FormBuilder);
+
+  form = this.fb.group({
+    email: ['', [Validators.required, Validators.email]]
+  });
+
+  submit(): void {
+    if (this.form.invalid) {
+      return;
+    }
+
+    console.log('Forgot password request for:', this.form.value.email);
+  }
+}

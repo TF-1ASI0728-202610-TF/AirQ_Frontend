@@ -1,0 +1,75 @@
+<section class="alert-center-section">
+  <div class="header-container">
+    <h1 class="page-title">Centro de Alertas</h1>
+  </div>
+
+  <div class="filters-panel">
+    <button class="filter-btn" [class.active]="activeFilter === 'ALL'" (click)="applyFilter('ALL')">
+      Todas
+    </button>
+    <button class="filter-btn" [class.active]="activeFilter === 'AI_ACTION'" (click)="applyFilter('AI_ACTION')">
+      Acciones de IA
+    </button>
+    <button class="filter-btn" [class.active]="activeFilter === 'HARDWARE_FAILURE'"
+      (click)="applyFilter('HARDWARE_FAILURE')">
+      Fallas de Hardware
+    </button>
+    <button class="filter-btn" [class.active]="activeFilter === 'UNREAD'" (click)="applyFilter('UNREAD')">
+      No Leídas
+    </button>
+  </div>
+
+  <div class="notifications-list">
+    <div *ngIf="isLoading" class="loading-state">
+      Cargando notificaciones...
+    </div>
+
+    <div *ngIf="!isLoading && filteredNotifications.length === 0" class="empty-state">
+      No hay notificaciones para mostrar.
+    </div>
+
+    <ng-container *ngIf="!isLoading">
+      <div *ngFor="let alert of filteredNotifications" class="notification-card"
+        [ngClass]="{'is-hardware': alert.type === 'HARDWARE_FAILURE', 'is-ai': alert.type === 'AI_ACTION', 'is-read': alert.isRead}">
+        <div class="card-header">
+          <div class="location-badge">{{ alert.location }}</div>
+          <div class="timestamp">{{ alert.createdAt | date:'short' }}</div>
+        </div>
+
+        <div class="diagnosis-block">
+          <strong>Diagnóstico:</strong>
+          <p>{{ alert.diagnosis }}</p>
+        </div>
+
+        <div class="action-block" [ngClass]="alert.type === 'AI_ACTION' ? 'ai-action' : 'hw-action'">
+          <strong>Acción:</strong>
+          <p>{{ alert.executedAction }}</p>
+        </div>
+
+        <div class="card-footer">
+          <!-- Button for AI Action -->
+          <button *ngIf="alert.type === 'AI_ACTION' && !alert.isRead" class="btn-primary"
+            (click)="markAsRead(alert.id)">
+            Entendido
+          </button>
+          <span *ngIf="alert.type === 'AI_ACTION' && alert.isRead" class="read-status">
+            ✓ Revisado
+          </span>
+
+          <!-- Button for Hardware Failure -->
+          <ng-container *ngIf="alert.type === 'HARDWARE_FAILURE'">
+            <button *ngIf="!submittedTickets[alert.id]" class="btn-danger" (click)="requestTechSupport(alert)">
+              Solicitar Técnico
+            </button>
+            <button *ngIf="submittedTickets[alert.id] === 'submitting'" class="btn-danger" disabled>
+              Enviando...
+            </button>
+            <button *ngIf="submittedTickets[alert.id] === 'sent'" class="btn-primary" style="background-color: #28a745; cursor: default;" disabled>
+              ✓ Solicitud Enviada
+            </button>
+          </ng-container>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</section>

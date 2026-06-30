@@ -1,0 +1,253 @@
+<div class="analytics-page">
+
+    <div class="page-header">
+
+        <div>
+
+            <span class="page-badge">
+
+                <span class="material-icons">
+                    analytics
+                </span>
+
+                Inteligencia Ambiental
+
+            </span>
+
+            <h1>
+                Centro Analítico AirQ
+            </h1>
+
+            <p>
+                Información estratégica basada en sensores IoT y monitoreo ambiental
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="kpi-grid">
+
+        <div class="kpi-card">
+
+            <span class="material-icons">
+                sensors
+            </span>
+
+            <h2>
+                {{ activeSensorsCount }}
+            </h2>
+
+            <p>
+                Sensores Activos
+            </p>
+
+        </div>
+
+        <div class="kpi-card">
+
+            <span class="material-icons">
+                warning
+            </span>
+
+            <h2>
+                {{ sensorsAtRisk }}
+            </h2>
+
+            <p>
+                Sensores en Riesgo
+            </p>
+
+        </div>
+
+        <div class="kpi-card">
+
+            <span class="material-icons">
+                co2
+            </span>
+
+            <h2>
+                {{ averageCo2 }}
+            </h2>
+
+            <p>
+                CO₂ Promedio Global
+            </p>
+
+        </div>
+
+        <div class="kpi-card">
+
+            <span class="material-icons">
+                location_on
+            </span>
+
+            <h2>
+                {{ criticalLocation }}
+            </h2>
+
+            <p>
+                Zona Más Crítica
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="analytics-grid">
+
+        <div class="analytics-card">
+
+            <div class="card-header">
+
+                <h3>
+                    Estado Ambiental General
+                </h3>
+
+            </div>
+
+            <div class="status-preview">
+
+                <div class="status-circle">
+
+                    <span>
+                        AIRQ
+                    </span>
+
+                </div>
+
+                <h2 [class.good]="globalAirQuality === 'BUENO'" [class.moderate]="globalAirQuality === 'MODERADO'"
+                    [class.low]="globalAirQuality === 'BAJO'">
+
+                    {{ globalAirQuality }}
+
+                </h2>
+
+                <p>
+                    Basado en las últimas mediciones registradas
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="analytics-card">
+
+            <div class="card-header">
+
+                <h3>
+                    Alertas Inteligentes
+                </h3>
+
+            </div>
+
+            <div class="alerts-list">
+
+                @for(alert of alerts; track $index){
+
+                <div class="alert-item">
+
+                    <span class="material-icons">
+                        warning
+                    </span>
+
+                    {{ alert }}
+
+                </div>
+
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="analytics-card large">
+
+        <div class="card-header">
+
+            <h3>
+                Recomendaciones Inteligentes
+            </h3>
+
+        </div>
+
+        <div class="placeholder-chart">
+
+            <span class="material-icons">
+                psychology
+            </span>
+
+            <p>
+
+                @if(globalAirQuality === 'BUENO') {
+
+                La calidad ambiental actual
+                es estable y segura
+
+                }
+
+                @if(globalAirQuality === 'MODERADO') {
+
+                Se recomienda monitorear
+                las zonas con mayor actividad
+
+                }
+
+                @if(globalAirQuality === 'BAJO') {
+
+                Se detectaron condiciones
+                críticas que requieren atención
+
+                }
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="analytics-card">
+
+        <div class="card-header">
+
+            <h3>
+                Sensores Más Contaminados
+            </h3>
+
+        </div>
+
+        <div class="alerts-list">
+
+            @for(sensor of topPollutedSensors; track $index){
+
+            <div class="alert-item">
+
+                <span class="material-icons">
+                    sensors
+                </span>
+
+                {{ sensor.sensor.serialNumber }}
+                -
+                {{ sensor.sensor.location }}
+
+                <br>
+
+                CO₂:
+                {{ sensor.co2 }}
+
+                ppm |
+
+                PM2.5:
+                {{ sensor.pm25 }}
+
+            </div>
+
+            }
+
+        </div>
+
+    </div>
+
+</div>
